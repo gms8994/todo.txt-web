@@ -55,7 +55,7 @@ function run_todo($cmd) {
     } 
 
     $cmd = escapeshellcmd($todoCmd.' '.$cmd);
-    exec($cmd, $results);
+    exec($cmd, $results, $result_var);
 
     $output  = "<ul>\n";
     foreach($results as $task) {
@@ -93,6 +93,18 @@ function logout() {
     session_unset();
     displayform(0);
     exit();
+}
+
+function find_todo_file() {
+	global $todoCmd;
+	$cmd = escapeshellcmd($todoCmd.' prop');
+	exec($cmd, $results, $return_var);
+
+	if (count($results) == 0) {
+		throw new Exception("todo.txt file not found; please verify configuration is correct");
+	}
+
+	return $results[0];
 }
 
 ?>
